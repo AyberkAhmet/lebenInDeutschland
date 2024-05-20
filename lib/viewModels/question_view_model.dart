@@ -15,7 +15,6 @@ class QuestionViewModel extends ChangeNotifier {
   QuestionViewModel() {
     controlDataInHive();
     //getStatesQuestionsJson();
-    print("question view model construction");
   }
 
   void controlDataInHive() {

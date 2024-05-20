@@ -9,11 +9,10 @@ import 'package:pie_chart/pie_chart.dart';
 
 class ExamResultPage extends StatelessWidget {
   final ExamResultModel examResult;
-  const ExamResultPage(this.examResult, {Key? key}) : super(key: key);
+  const ExamResultPage(this.examResult, {super.key});
 
   @override
   Widget build(BuildContext context) {
-
     final double score = double.parse(((examResult.correctQuestionCount / 33) * 100).toStringAsFixed(2));
     final String status = score > 50 ? "Erfolgreich" : "Erfolglos";
 
@@ -23,9 +22,9 @@ class ExamResultPage extends StatelessWidget {
       "Leerer": examResult.blankQuestionCount.toDouble(),
     };
 
-    Duration _chartAnimationDuration = const Duration(milliseconds: 800);
+    Duration chartAnimationDuration = const Duration(milliseconds: 800);
 
-    List<String> _tableTitles = [
+    List<String> tableTitles = [
       trueQuestionCountText,
       falseQuestionCountText,
       blankQuestionCountText,
@@ -34,14 +33,12 @@ class ExamResultPage extends StatelessWidget {
       statusText,
     ];
 
-    List<String> _tableCounts = [
+    List<String> tableCounts = [
       examResult.correctQuestionCount.toString(),
       examResult.falseQuestionCount.toString(),
       examResult.blankQuestionCount.toString(),
       score.toString(),
-      examResult.time.minute.toString() +
-          ":" +
-          examResult.time.second.toString(),
+      "${examResult.time.minute}:${examResult.time.second}",
       status,
     ];
 
@@ -53,15 +50,14 @@ class ExamResultPage extends StatelessWidget {
         children: [
           Expanded(
             flex: 4,
-            child: _buildPieChart(dataMap, _chartAnimationDuration, context),
+            child: _buildPieChart(dataMap, chartAnimationDuration, context),
           ),
           Expanded(
             flex: 4,
-            child:
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: context.normalValue),
-                  child: _buildExamResultInfoCard(context, _tableTitles, _tableCounts),
-                ),
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: context.normalValue),
+              child: _buildExamResultInfoCard(context, tableTitles, tableCounts),
+            ),
           ),
           Expanded(
             flex: 2,
@@ -82,15 +78,11 @@ class ExamResultPage extends StatelessWidget {
       height: context.mediumValue,
       child: ElevatedButton(
         onPressed: () {
-
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => const ExamResultQuestionsPage()));
+          Navigator.push(context, MaterialPageRoute(builder: (context) => const ExamResultQuestionsPage()));
         },
         child: Text(
           "Siehe alle Prüfungsfragen",
-          style: context.primaryTextTheme.headline6,
+          style: context.primaryTextTheme.titleLarge,
         ),
       ),
     );
@@ -107,26 +99,18 @@ class ExamResultPage extends StatelessWidget {
     );
   }
 
-  Table _buildExamResultInfoCard(BuildContext context, List<String> tableTitles,
-      List<String> tableCounts) {
+  Table _buildExamResultInfoCard(BuildContext context, List<String> tableTitles, List<String> tableCounts) {
     return Table(
-      border: const TableBorder(
-        horizontalInside: BorderSide(),
-        bottom: BorderSide()
-      ),
+      border: const TableBorder(horizontalInside: BorderSide(), bottom: BorderSide()),
       columnWidths: const <int, TableColumnWidth>{
         0: IntrinsicColumnWidth(flex: 1),
         1: IntrinsicColumnWidth(flex: 0.5),
       },
-      children: List.generate(
-          6,
-          (index) =>
-              _buildTableRow(context, tableTitles[index], tableCounts[index])),
+      children: List.generate(6, (index) => _buildTableRow(context, tableTitles[index], tableCounts[index])),
     );
   }
 
-  TableRow _buildTableRow(
-      BuildContext context, String tableTitle, String tableCount) {
+  TableRow _buildTableRow(BuildContext context, String tableTitle, String tableCount) {
     return TableRow(
       children: [
         _buildTableCellTitleOrCount(context, tableTitle),
@@ -135,24 +119,22 @@ class ExamResultPage extends StatelessWidget {
     );
   }
 
-  Widget _buildTableCellTitleOrCount(
-      BuildContext context, String titleOrCount) {
+  Widget _buildTableCellTitleOrCount(BuildContext context, String titleOrCount) {
     return TableCell(
       verticalAlignment: TableCellVerticalAlignment.middle,
       child: SizedBox(
         height: context.mediumValue,
         child: Center(
-          child: Text(titleOrCount, style: context.primaryTextTheme.headline6),
+          child: Text(titleOrCount, style: context.primaryTextTheme.titleLarge),
         ),
       ),
     );
   }
 
-  PieChart _buildPieChart(Map<String, double> dataMap,
-      Duration _chartAnimationDuration, BuildContext context) {
+  PieChart _buildPieChart(Map<String, double> dataMap, Duration chartAnimationDuration, BuildContext context) {
     return PieChart(
       dataMap: dataMap,
-      animationDuration: _chartAnimationDuration,
+      animationDuration: chartAnimationDuration,
       chartLegendSpacing: 32,
       chartRadius: context.width / 2,
       colorList: pieChartItemsColors,

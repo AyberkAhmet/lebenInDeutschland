@@ -6,10 +6,10 @@ import 'package:leben_in_deutschland/widgets/question_widget.dart';
 import 'package:provider/provider.dart';
 
 class PinnedQuestionsPage extends StatefulWidget {
-  const PinnedQuestionsPage({Key? key}) : super(key: key);
+  const PinnedQuestionsPage({super.key});
 
   @override
-  _PinnedQuestionsPageState createState() => _PinnedQuestionsPageState();
+  State<PinnedQuestionsPage> createState() => _PinnedQuestionsPageState();
 }
 
 class _PinnedQuestionsPageState extends State<PinnedQuestionsPage> {
@@ -17,20 +17,17 @@ class _PinnedQuestionsPageState extends State<PinnedQuestionsPage> {
 
   @override
   Widget build(BuildContext context) {
-    final QuestionViewModel _questionsViewModel =
-        Provider.of<QuestionViewModel>(context);
-    List<QuestionModel> _questions = _questionsViewModel.getPinnedQuestions();
+    final QuestionViewModel questionsViewModel = Provider.of<QuestionViewModel>(context);
+    List<QuestionModel> questions = questionsViewModel.getPinnedQuestions();
 
     return Scaffold(
-      appBar: AppBar(),
-      body: Center(
-              child: PageView(
-                controller: controller,
-                children: _buildQuestionPages(_questions).toList(),
-              ),
-            )
-          
-    );
+        appBar: AppBar(),
+        body: Center(
+          child: PageView(
+            controller: controller,
+            children: _buildQuestionPages(questions).toList(),
+          ),
+        ));
   }
 
   Iterable<Widget> _buildQuestionPages(List<QuestionModel> questions) sync* {

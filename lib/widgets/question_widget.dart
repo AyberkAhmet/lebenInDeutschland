@@ -13,15 +13,13 @@ import 'package:translator/translator.dart';
 class QuestionWidget extends StatefulWidget {
   final int questionID;
   final PageType _pageType;
-  const QuestionWidget(this.questionID, this._pageType, {Key? key})
-      : super(key: key);
+  const QuestionWidget(this.questionID, this._pageType, {super.key});
 
   @override
-  _QuestionWidgetState createState() => _QuestionWidgetState();
+  State<QuestionWidget> createState() => _QuestionWidgetState();
 }
 
-class _QuestionWidgetState extends State<QuestionWidget>
-    with AutomaticKeepAliveClientMixin {
+class _QuestionWidgetState extends State<QuestionWidget> with AutomaticKeepAliveClientMixin {
   final translator = GoogleTranslator();
   bool? _isAnswered;
   List<Color>? optionColors;
@@ -52,15 +50,11 @@ class _QuestionWidgetState extends State<QuestionWidget>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    final ExamResultViewModel _examResultViewModel =
-        Provider.of<ExamResultViewModel>(context);
+    final ExamResultViewModel examResultViewModel = Provider.of<ExamResultViewModel>(context);
 
-    final QuestionViewModel _questionsViewModel =
-        Provider.of<QuestionViewModel>(context);
+    final QuestionViewModel questionsViewModel = Provider.of<QuestionViewModel>(context);
 
-    if (context.theme.brightness == Brightness.light &&
-        _isAnswered == false &&
-        _isFirst == true) {
+    if (context.theme.brightness == Brightness.light && _isAnswered == false && _isFirst == true) {
       optionColors = [
         lightThemeSecondColor,
         lightThemeSecondColor,
@@ -75,13 +69,11 @@ class _QuestionWidgetState extends State<QuestionWidget>
       ];
     }
 
-    question = _questionsViewModel.questions[widget.questionID - 1];
+    question = questionsViewModel.questions[widget.questionID - 1];
 
     if (widget._pageType == PageType.examResultQuestionPage) {
-      _selectedQuestionOptionIndex = _examResultViewModel
-          .findQuestionSelectedOptionIndex(widget.questionID);
-      controlQuestion(
-          question!, _selectedQuestionOptionIndex, _examResultViewModel);
+      _selectedQuestionOptionIndex = examResultViewModel.findQuestionSelectedOptionIndex(widget.questionID);
+      controlQuestion(question!, _selectedQuestionOptionIndex, examResultViewModel);
     }
 
     //translator.translate("Hello", to: 'tr').then(print);
@@ -93,7 +85,7 @@ class _QuestionWidgetState extends State<QuestionWidget>
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               //_buildTranslateButton(),
-              _buildPinButton(_questionsViewModel),
+              widget._pageType != PageType.examPage ? _buildPinButton(questionsViewModel) : const SizedBox(),
             ],
           ),
         ),
@@ -101,8 +93,7 @@ class _QuestionWidgetState extends State<QuestionWidget>
           flex: 15,
           child: Center(
               child: FutureBuilder(
-            future: _buildQuestion(
-                _examResultViewModel, _selectedQuestionOptionIndex),
+            future: _buildQuestion(examResultViewModel, _selectedQuestionOptionIndex),
             builder: (context, snapshot) {
               if (snapshot.hasData) {
                 return snapshot.data as Widget;
@@ -116,9 +107,9 @@ class _QuestionWidgetState extends State<QuestionWidget>
     );
   }
 
-  IconButton _buildTranslateButton() {
-    return IconButton(onPressed: () {}, icon: const Icon(Icons.translate));
-  }
+  // IconButton _buildTranslateButton() {
+  //   return IconButton(onPressed: () {}, icon: const Icon(Icons.translate));
+  // }
 
   IconButton _buildPinButton(QuestionViewModel questionsViewModel) {
     return IconButton(
@@ -126,16 +117,13 @@ class _QuestionWidgetState extends State<QuestionWidget>
           question!.isPinned = !(question!.isPinned!);
           questionsViewModel.putItem(question!);
         },
-        icon: question!.isPinned!
-            ? const Icon(Icons.push_pin)
-            : const Icon(Icons.push_pin_outlined));
+        icon: question!.isPinned! ? const Icon(Icons.push_pin) : const Icon(Icons.push_pin_outlined));
   }
 
   Widget _buildQuestionNumberCard(int questionID) {
     return Text(
       "Fragen $questionID",
-      style: context.primaryTextTheme.headline5!
-          .copyWith(color: Color.fromRGBO(0, 145, 173, 1)),
+      style: context.primaryTextTheme.headlineSmall!.copyWith(color: const Color.fromRGBO(0, 145, 173, 1)),
     );
   }
 
@@ -144,7 +132,7 @@ class _QuestionWidgetState extends State<QuestionWidget>
       width: context.width,
       child: AutoSizeText(
         question.question,
-        style: context.primaryTextTheme.headline5,
+        style: context.primaryTextTheme.headlineSmall,
         //textAlign: TextAlign.start,
         minFontSize: 15,
         maxLines: 5,
@@ -153,10 +141,7 @@ class _QuestionWidgetState extends State<QuestionWidget>
     );
   }
 
-  Column _buildQuestionOptions(
-      QuestionModel question,
-      ExamResultViewModel examResultViewModel,
-      int? selectedQuestionOptionIndex) {
+  Column _buildQuestionOptions(QuestionModel question, ExamResultViewModel examResultViewModel, int? selectedQuestionOptionIndex) {
     var sizeGroup = AutoSizeGroup();
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -166,18 +151,17 @@ class _QuestionWidgetState extends State<QuestionWidget>
             style: ElevatedButton.styleFrom(
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(18.0),
-                  side: BorderSide(
-                      color: optionBorderColors![optionIndex], width: 3),
+                  side: BorderSide(color: optionBorderColors![optionIndex], width: 3),
                 ),
-                primary: optionColors![optionIndex],
+                backgroundColor: optionColors![optionIndex],
                 alignment: Alignment.center,
-                fixedSize: Size(context.width, 70)),
+                fixedSize: Size(context.width, 60)),
             onPressed: () {
               controlQuestion(question, optionIndex, examResultViewModel);
             },
             child: AutoSizeText(
               question.options[optionIndex]["text"],
-              style: context.primaryTextTheme.headline6,
+              style: context.primaryTextTheme.titleLarge,
               textAlign: TextAlign.center,
               minFontSize: 15,
               group: sizeGroup,
@@ -186,8 +170,7 @@ class _QuestionWidgetState extends State<QuestionWidget>
     );
   }
 
-  void controlQuestion(QuestionModel question, int? optionIndex,
-      ExamResultViewModel examResultViewModel) {
+  void controlQuestion(QuestionModel question, int? optionIndex, ExamResultViewModel examResultViewModel) {
     if (widget._pageType == PageType.examPage) {
       for (var i = 0; i < optionColors!.length; i++) {
         if (context.theme.brightness == Brightness.light) {
@@ -238,8 +221,7 @@ class _QuestionWidgetState extends State<QuestionWidget>
     return SizedBox(
       width: context.width,
       child: Card(
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
           color: Colors.white,
           child: Padding(
             padding: EdgeInsets.all(context.lowValue),
@@ -248,8 +230,7 @@ class _QuestionWidgetState extends State<QuestionWidget>
     );
   }
 
-  Future<Widget> _buildQuestion(ExamResultViewModel examResultViewModel,
-      int? selectedQuestionOptionIndex) async {
+  Future<Widget> _buildQuestion(ExamResultViewModel examResultViewModel, int? selectedQuestionOptionIndex) async {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: context.normalValue),
       child: question!.hasImage == true
@@ -276,8 +257,7 @@ class _QuestionWidgetState extends State<QuestionWidget>
                 ),
                 Expanded(
                   flex: 8,
-                  child: _buildQuestionOptions(question!, examResultViewModel,
-                      selectedQuestionOptionIndex),
+                  child: _buildQuestionOptions(question!, examResultViewModel, selectedQuestionOptionIndex),
                 ),
               ],
             )
@@ -300,8 +280,7 @@ class _QuestionWidgetState extends State<QuestionWidget>
                 ),
                 Expanded(
                   flex: 8,
-                  child: _buildQuestionOptions(question!, examResultViewModel,
-                      selectedQuestionOptionIndex),
+                  child: _buildQuestionOptions(question!, examResultViewModel, selectedQuestionOptionIndex),
                 ),
                 const Spacer()
               ],
@@ -321,45 +300,45 @@ class _QuestionWidgetState extends State<QuestionWidget>
     );
   }
 
-  void _translate() async {
-    //await translator.translate(question.question, to: 'tr').then((value) => print(value));
-    // if (widget.isTranslated) {
-    //   String tQuestion = await translator
-    //       .translate(question.question, to: 'tr')
-    //       .then((value) => print(value)) as String;
-    //   String tCategory = await translator.translate(question.category, to: 'tr') as String;
-    //   List<String> tOptions = [];
-    //   for (var i = 0; i < 4; i++) {
-    //     tOptions.add(await translator.translate(question.category, to: 'tr') as String);
-    //   }
-    //   String tCorrect = await translator.translate(question.correctAnswer, to: 'tr') as String;
-    //   print(tCorrect);
-    //   QuestionModel translatedQuestion = QuestionModel(
-    //       id: question.id,
-    //       category: tCategory,
-    //       question: tQuestion,
-    //       options: tOptions,
-    //       correctAnswer: tCorrect);
-    //   print(translatedQuestion);
-    //   return Column(
-    //     children: [
-    //       _buildQuestionNumberCard(translatedQuestion),
-    //       _buildQuestionText(translatedQuestion),
-    //       //TODO image
-    //       _buildQuestionOptions(translatedQuestion, examResultViewModel),
-    //     ],
-    //   );
-    // } else {
-    //   return Column(
-    //     children: [
-    //       Align(alignment: Alignment.centerLeft, child: _buildQuestionNumberCard(question)),
-    //       _buildQuestionText(question),
-    //       //TODO image
-    //       _buildQuestionOptions(question, examResultViewModel),
-    //     ],
-    //   );
-    // }
-  }
+  // void _translate() async {
+  //   await translator.translate(question.question, to: 'tr').then((value) => print(value));
+  //   if (widget.isTranslated) {
+  //     String tQuestion = await translator
+  //         .translate(question.question, to: 'tr')
+  //         .then((value) => print(value)) as String;
+  //     String tCategory = await translator.translate(question.category, to: 'tr') as String;
+  //     List<String> tOptions = [];
+  //     for (var i = 0; i < 4; i++) {
+  //       tOptions.add(await translator.translate(question.category, to: 'tr') as String);
+  //     }
+  //     String tCorrect = await translator.translate(question.correctAnswer, to: 'tr') as String;
+  //     print(tCorrect);
+  //     QuestionModel translatedQuestion = QuestionModel(
+  //         id: question.id,
+  //         category: tCategory,
+  //         question: tQuestion,
+  //         options: tOptions,
+  //         correctAnswer: tCorrect);
+  //     print(translatedQuestion);
+  //     return Column(
+  //       children: [
+  //         _buildQuestionNumberCard(translatedQuestion),
+  //         _buildQuestionText(translatedQuestion),
+  //         //TODO image
+  //         _buildQuestionOptions(translatedQuestion, examResultViewModel),
+  //       ],
+  //     );
+  //   } else {
+  //     return Column(
+  //       children: [
+  //         Align(alignment: Alignment.centerLeft, child: _buildQuestionNumberCard(question)),
+  //         _buildQuestionText(question),
+  //         //TODO image
+  //         _buildQuestionOptions(question, examResultViewModel),
+  //       ],
+  //     );
+  //   }
+  // }
 
   @override
   bool get wantKeepAlive => true;

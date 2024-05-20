@@ -5,12 +5,12 @@ class RateInitWidget extends StatefulWidget {
   final Widget Function(RateMyApp) builder;
 
   const RateInitWidget({
-    Key? key,
+    super.key,
     required this.builder,
-  }) : super(key: key);
+  });
 
   @override
-  _RateInitWidgetState createState() => _RateInitWidgetState();
+  State<RateInitWidget> createState() => _RateInitWidgetState();
 }
 
 class _RateInitWidgetState extends State<RateInitWidget> {
@@ -51,9 +51,7 @@ class _RateInitWidgetState extends State<RateInitWidget> {
   }
 
   List<Widget> actionsBuilder(BuildContext context, double? stars) =>
-      stars == null
-          ? [buildCancelButton()]
-          : [buildOkButton(stars), buildCancelButton()];
+      stars == null ? [buildCancelButton()] : [buildOkButton(stars), buildCancelButton()];
 
   Widget buildOkButton(double stars) => TextButton(
         child: const Text('OK'),
@@ -71,8 +69,9 @@ class _RateInitWidgetState extends State<RateInitWidget> {
           if (launchAppStore) {
             rateMyApp!.launchStore();
           }
-
-          Navigator.of(context).pop();
+          if (mounted) {
+            Navigator.of(context).pop();
+          }
         },
       );
 

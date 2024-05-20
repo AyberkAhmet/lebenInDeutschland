@@ -5,7 +5,6 @@ import 'package:leben_in_deutschland/models/bottom_navbar_item_model.dart';
 import 'package:leben_in_deutschland/models/home_menu_item_model.dart';
 import 'package:leben_in_deutschland/screens/constitution_page.dart';
 import 'package:leben_in_deutschland/screens/examPages/all_exam_results_page.dart';
-import 'package:leben_in_deutschland/screens/home_page.dart';
 import 'package:leben_in_deutschland/screens/questionsPages/all_questions.dart';
 import 'package:leben_in_deutschland/screens/questionsPages/pinned_questions_page.dart';
 import 'package:leben_in_deutschland/screens/settingsPages/settings_page.dart';

@@ -36,10 +36,10 @@ class QuestionsCacheManager {
   }
 
   List<QuestionModel> getPinnedItems() {
-    List<QuestionModel>? _pinnedQuestions = [];
-    _pinnedQuestions =
+    List<QuestionModel>? pinnedQuestions = [];
+    pinnedQuestions =
         _questionsBox?.values.where((element) => element.isPinned!).toList();
-    return _pinnedQuestions!;
+    return pinnedQuestions!;
   }
 
   void closeBox() {

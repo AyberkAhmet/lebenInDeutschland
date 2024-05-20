@@ -8,7 +8,7 @@ import 'package:leben_in_deutschland/screens/stateQuestionsPages/state_question_
 
 class ChooseStatePage extends StatefulWidget {
   final PageType pageType;
-  const ChooseStatePage(this.pageType, {Key? key}) : super(key: key);
+  const ChooseStatePage(this.pageType, {super.key});
 
   @override
   State<ChooseStatePage> createState() => _ChooseStatePageState();
@@ -53,7 +53,10 @@ class _ChooseStatePageState extends State<ChooseStatePage> {
                   builder: (context) => StateQuestionPage(_selectedStateIndex),
                 ));
       },
-      child:  Text(chooseStateButtonText, style: context.primaryTextTheme.headline6,),
+      child: Text(
+        chooseStateButtonText,
+        style: context.primaryTextTheme.titleLarge,
+      ),
     );
   }
 
@@ -63,8 +66,12 @@ class _ChooseStatePageState extends State<ChooseStatePage> {
       value: _selectedStateIndex,
       items: List.generate(
           allStates.length,
-          (index) =>
-              DropdownMenuItem(value: index, child: Text(allStates[index],style: context.primaryTextTheme.headline6,))),
+          (index) => DropdownMenuItem(
+              value: index,
+              child: Text(
+                allStates[index],
+                style: context.primaryTextTheme.titleLarge,
+              ))),
       onChanged: (value) {
         _selectedStateIndex = value!;
         setState(() {});

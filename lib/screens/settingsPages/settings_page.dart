@@ -14,7 +14,7 @@ import 'package:rive/rive.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class SettingsPage extends StatefulWidget {
-  const SettingsPage({Key? key}) : super(key: key);
+  const SettingsPage({super.key});
 
   @override
   State<SettingsPage> createState() => _SettingsPageState();
@@ -36,15 +36,14 @@ class _SettingsPageState extends State<SettingsPage> {
 
   @override
   Widget build(BuildContext context) {
-    String _urlStore = Platform.isAndroid
-        ? "https://play.google.com/store/apps/details?id=com.desicion.spinner"
+    String urlStore = Platform.isAndroid
+        ? "https://play.google.com/store/apps/details?id=com.norlaxn.lidPrufungstraining"
         : "https://apps.apple.com/us/story/id1310535450?itscg=10000&itsct=";
 
     return Scaffold(
       appBar: AppBar(title: const Text("Settings")),
       body: Center(
         child: GridView.extent(
-          
           shrinkWrap: true,
           padding: EdgeInsets.all(context.lowValue),
           mainAxisSpacing: context.lowValue,
@@ -66,7 +65,7 @@ class _SettingsPageState extends State<SettingsPage> {
             ),
             SettingMenuItemButton(
               onpressed: () {
-                _launchURL(_urlStore);
+                _launchURL(urlStore);
               },
               icon: Icons.star,
               iconColor: Colors.yellow,
@@ -75,8 +74,7 @@ class _SettingsPageState extends State<SettingsPage> {
             SettingMenuItemButton(
               onpressed: () {
                 BetterFeedback.of(context).show((feedback) async {
-                  final screenshotFilePath =
-                      await writeImageToStorage(feedback.screenshot);
+                  final screenshotFilePath = await writeImageToStorage(feedback.screenshot);
 
                   final Email email = Email(
                     body: feedback.text,
@@ -92,49 +90,54 @@ class _SettingsPageState extends State<SettingsPage> {
               iconColor: Colors.green,
               title: feedbackButtonTitle,
             ),
+            // SettingMenuItemButton(
+            //   onpressed: () {
+            //     final snackBar = SnackBar(
+            //       content: const Text('Remove Ads unavailable!'),
+            //       action: SnackBarAction(
+            //         label: 'OK',
+            //         onPressed: () {},
+            //       ),
+            //     );
+            //     ScaffoldMessenger.of(context).showSnackBar(snackBar);
+            //   },
+            //   icon: Icons.do_not_disturb,
+            //   iconColor: Colors.red,
+            //   title: removeAdsButtonTitle,
+            // ),
             SettingMenuItemButton(
-              onpressed: () {
-                final snackBar = SnackBar(
-                  content: const Text('Remove Ads unavailable!'),
-                  action: SnackBarAction(
-                    label: 'OK',
-                    onPressed: () {},
-                  ),
-                );
-                ScaffoldMessenger.of(context).showSnackBar(snackBar);
-              },
-              icon: Icons.do_not_disturb,
-              iconColor: Colors.red,
-              title: removeAdsButtonTitle,
-            ),
-            SettingMenuItemButton(
-              onpressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => OtherAppsPage(),) ),
+              onpressed: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => OtherAppsPage(),
+                  )),
               icon: Icons.apps,
               iconColor: Colors.blue,
               title: otherAppsButtonTitle,
             ),
-            ElevatedButton(
-                onPressed: () => _launchURL(buyMeCoffeeUrl),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Expanded(
-                      flex: 3,
-                        child: Padding(
-                      padding: EdgeInsets.all(context.normalValue),
-                      child: Image.asset(
-                        buyMeCoffeeImageUrl,
-                        fit: BoxFit.values[0],
-                      ),
-                    )),
-                    Expanded(
-                      flex: 2,
-                      child: Text("Buy Me A Coffee",
-                          textAlign: TextAlign.center,
-                          style: context.theme.primaryTextTheme.headline5),
-                    ),
-                  ],
-                )),
+            // ElevatedButton(
+            //   onPressed: () => _launchURL(buyMeCoffeeUrl),
+            //   child: Column(
+            //     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            //     children: [
+            //       Expanded(
+            //           flex: 3,
+            //           child: Padding(
+            //             padding: EdgeInsets.all(context.normalValue),
+            //             child: Image.asset(
+            //               buyMeCoffeeImageUrl,
+            //               fit: BoxFit.values[0],
+            //             ),
+            //           )),
+            //       Expanded(
+            //         flex: 2,
+            //         child: Text("Buy Me A Coffee",
+            //             textAlign: TextAlign.center,
+            //             style: context.theme.primaryTextTheme.headlineSmall),
+            //       ),
+            //     ],
+            //   ),
+            // ),
           ],
         ),
       ),
@@ -142,8 +145,7 @@ class _SettingsPageState extends State<SettingsPage> {
   }
 
   void _onRiveInit(Artboard artboard) {
-    final controller =
-        StateMachineController.fromArtboard(artboard, 'State Machine 1');
+    final controller = StateMachineController.fromArtboard(artboard, 'State Machine 1');
 
     artboard.addController(controller!);
 
@@ -151,8 +153,8 @@ class _SettingsPageState extends State<SettingsPage> {
     _bump!.change(isDark);
   }
 
-  void _launchURL(String _url) async {
-    if (!await launch(_url)) throw 'Could not launch $_url ';
+  void _launchURL(String url) async {
+    if (!await launch(url)) throw 'Could not launch $url ';
   }
 
   Future<String> writeImageToStorage(Uint8List feedbackScreenshot) async {

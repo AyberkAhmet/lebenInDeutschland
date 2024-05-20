@@ -3,7 +3,7 @@ import 'package:leben_in_deutschland/constants/style_constants.dart';
 
 class CustomTheme {
   get darkTheme => ThemeData.dark().copyWith(
-    appBarTheme: const AppBarTheme(
+        appBarTheme: const AppBarTheme(
             elevation: 0,
             color: darkThemeBackgroundColor, //lightThemeAppBarColor,
             centerTitle: true,
@@ -14,21 +14,20 @@ class CustomTheme {
               fontWeight: FontWeight.bold,
             )),
         primaryTextTheme: const TextTheme(
-          headline5: TextStyle(
+          headlineSmall: TextStyle(
             color: Colors.white,
             fontSize: 25,
             fontWeight: FontWeight.bold,
           ),
-          headline6: TextStyle(
+          titleLarge: TextStyle(
             color: Colors.white,
             fontSize: 20,
           ),
         ),
         elevatedButtonTheme: ElevatedButtonThemeData(
-          style:
-              ElevatedButton.styleFrom(primary: const Color.fromRGBO(16, 16, 16, 1)),
+          style: ElevatedButton.styleFrom(
+              backgroundColor: const Color.fromRGBO(16, 16, 16, 1)),
         ),
-        
       );
 
   get lightTheme => ThemeData.light().copyWith(
@@ -49,20 +48,19 @@ class CustomTheme {
         bottomAppBarTheme: const BottomAppBarTheme(
             color: lightThemeSecondColor, elevation: 20),
         primaryTextTheme: const TextTheme(
-          headline5: TextStyle(
+          headlineSmall: TextStyle(
             color: Colors.black,
             fontSize: 25,
             fontWeight: FontWeight.bold,
           ),
-          headline6: TextStyle(
+          titleLarge: TextStyle(
             color: Colors.black,
             fontSize: 20,
           ),
         ),
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
-            primary: lightThemeSecondColor,
-
+            backgroundColor: lightThemeSecondColor,
           ),
         ),
       );

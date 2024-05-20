@@ -11,8 +11,8 @@ class SettingMenuItemButton extends StatelessWidget {
     required this.icon,
     required this.iconColor,
     required this.title,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -26,11 +26,7 @@ class SettingMenuItemButton extends StatelessWidget {
             color: iconColor,
             size: 40,
           ),
-          Text(
-            title,
-            textAlign: TextAlign.center,
-            style: context.theme.primaryTextTheme.headline5
-          ),
+          Text(title, textAlign: TextAlign.center, style: context.theme.primaryTextTheme.headlineSmall),
         ],
       ),
     );

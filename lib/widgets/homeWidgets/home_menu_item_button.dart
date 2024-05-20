@@ -4,16 +4,14 @@ import 'package:leben_in_deutschland/models/home_menu_item_model.dart';
 
 class HomeMenuItemButton extends StatelessWidget {
   final HomeMenuItemModel _homeMenuItemModel;
-  const HomeMenuItemButton(this._homeMenuItemModel, {Key? key})
-      : super(key: key);
+  const HomeMenuItemButton(this._homeMenuItemModel, {super.key});
 
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
         style: context.theme.elevatedButtonTheme.style!.copyWith(
-          fixedSize: MaterialStateProperty.all(Size(context.width, context.highValue)),
-          shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(30))),
-          
+          fixedSize: WidgetStateProperty.all(Size(context.width, context.highValue)),
+          shape: WidgetStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(30))),
         ),
         onPressed: () => Navigator.push(
             context,
@@ -22,7 +20,7 @@ class HomeMenuItemButton extends StatelessWidget {
             )),
         child: Text(
           _homeMenuItemModel.title,
-          style: context.theme.primaryTextTheme.headline5,
+          style: context.theme.primaryTextTheme.headlineSmall,
         ));
   }
 }

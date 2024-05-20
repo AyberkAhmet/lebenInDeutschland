@@ -7,8 +7,7 @@ import 'package:provider/provider.dart';
 
 class StateQuestionPage extends StatefulWidget {
   final int _selectedStateIndex;
-  const StateQuestionPage(this._selectedStateIndex, {Key? key})
-      : super(key: key);
+  const StateQuestionPage(this._selectedStateIndex, {super.key});
 
   @override
   State<StateQuestionPage> createState() => _StateQuestionPageState();
@@ -25,8 +24,7 @@ class _StateQuestionPageState extends State<StateQuestionPage> {
 
   @override
   Widget build(BuildContext context) {
-    final QuestionViewModel _questionsViewModel =
-        Provider.of<QuestionViewModel>(context);
+    final QuestionViewModel questionsViewModel = Provider.of<QuestionViewModel>(context);
 
     return Scaffold(
       appBar: AppBar(),
@@ -34,8 +32,7 @@ class _StateQuestionPageState extends State<StateQuestionPage> {
         child: PageView.builder(
           itemCount: 10,
           itemBuilder: (context, index) {
-            return _buildQuestionPages(_questionsViewModel.questions,
-                300 + (widget._selectedStateIndex * 10) + index);
+            return _buildQuestionPages(questionsViewModel.questions, 300 + (widget._selectedStateIndex * 10) + index);
           },
           allowImplicitScrolling: true,
           controller: controller,

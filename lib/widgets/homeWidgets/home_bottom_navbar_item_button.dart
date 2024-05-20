@@ -3,8 +3,7 @@ import 'package:leben_in_deutschland/models/bottom_navbar_item_model.dart';
 
 class HomeBottomNavbarItemButton extends StatelessWidget {
   final BottomNavbarItemModel bottomNavbarItemModel;
-  const HomeBottomNavbarItemButton(this.bottomNavbarItemModel, {Key? key})
-      : super(key: key);
+  const HomeBottomNavbarItemButton(this.bottomNavbarItemModel, {super.key});
 
   @override
   Widget build(BuildContext context) {

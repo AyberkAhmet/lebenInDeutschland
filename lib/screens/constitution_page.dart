@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_cached_pdfview/flutter_cached_pdfview.dart';
 
 class ConstitutionPage extends StatelessWidget {
-  const ConstitutionPage({Key? key}) : super(key: key);
+  const ConstitutionPage({super.key});
 
   @override
   Widget build(BuildContext context) {

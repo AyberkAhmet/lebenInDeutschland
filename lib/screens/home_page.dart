@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:leben_in_deutschland/constants/constants.dart';
 import 'package:leben_in_deutschland/enums/enums.dart';
@@ -7,9 +9,24 @@ import 'package:leben_in_deutschland/viewModels/question_view_model.dart';
 import 'package:leben_in_deutschland/widgets/homeWidgets/home_bottom_navbar_item_button.dart';
 import 'package:leben_in_deutschland/widgets/homeWidgets/home_menu_item_button.dart';
 import 'package:provider/provider.dart';
+import 'package:user_messaging_platform/user_messaging_platform.dart';
 
-class HomePage extends StatelessWidget {
-  const HomePage({Key? key}) : super(key: key);
+class HomePage extends StatefulWidget {
+  const HomePage({super.key});
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  @override
+  void initState() {
+    super.initState();
+    if (Platform.isIOS) {
+      showATTPermissionRequest();
+    }
+    updateConsent();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -79,5 +96,24 @@ class HomePage extends StatelessWidget {
 
   IconButton _buildHomeButton(BuildContext context) {
     return IconButton(onPressed: () {}, icon: const Icon(Icons.home));
+  }
+
+  void updateConsent() async {
+    // Make sure to continue with the latest consent info.
+    var info = await UserMessagingPlatform.instance.requestConsentInfoUpdate();
+
+    // Show the consent form if consent is required.
+    if (info.consentStatus == ConsentStatus.required) {
+      // `showConsentForm` returns the latest consent info, after the consent from has been closed.
+      info = await UserMessagingPlatform.instance.showConsentForm();
+    }
+  }
+
+  void showATTPermissionRequest() async {
+    final status = await UserMessagingPlatform.instance.getTrackingAuthorizationStatus();
+
+    if (status == TrackingAuthorizationStatus.notDetermined) {
+      await UserMessagingPlatform.instance.requestTrackingAuthorization();
+    }
   }
 }

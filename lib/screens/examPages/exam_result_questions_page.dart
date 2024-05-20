@@ -6,21 +6,19 @@ import 'package:leben_in_deutschland/widgets/question_widget.dart';
 import 'package:provider/provider.dart';
 
 class ExamResultQuestionsPage extends StatelessWidget {
-  const ExamResultQuestionsPage({Key? key}) : super(key: key);
+  const ExamResultQuestionsPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final ExamResultViewModel _examResultViewModel =
-        Provider.of<ExamResultViewModel>(context);
+    final ExamResultViewModel examResultViewModel = Provider.of<ExamResultViewModel>(context);
 
     return Scaffold(
       appBar: AppBar(),
       body: Center(
         child: PageView.builder(
-          itemCount: _examResultViewModel.examResult.answeredQuestions.length,
+          itemCount: examResultViewModel.examResult.answeredQuestions.length,
           itemBuilder: (context, index) {
-            return _buildQuestionPages(_examResultViewModel
-                .examResult.answeredQuestions[index]["question"]);
+            return _buildQuestionPages(examResultViewModel.examResult.answeredQuestions[index]["question"]);
           },
           allowImplicitScrolling: true,
         ),

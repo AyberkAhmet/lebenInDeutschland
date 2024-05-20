@@ -5,33 +5,28 @@ import 'package:leben_in_deutschland/viewModels/exam_result_view_model.dart';
 import 'package:provider/provider.dart';
 
 class AllExamResultsPage extends StatelessWidget {
-  const AllExamResultsPage({Key? key}) : super(key: key);
+  const AllExamResultsPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final ExamResultViewModel _examResultViewModel =
-        Provider.of<ExamResultViewModel>(context);
-    _examResultViewModel.getExamResult();
-    List<ExamResultModel> allExamResults = _examResultViewModel.allExamResults;
+    final ExamResultViewModel examResultViewModel = Provider.of<ExamResultViewModel>(context);
+    examResultViewModel.getExamResult();
+    List<ExamResultModel> allExamResults = examResultViewModel.allExamResults;
     allExamResults = allExamResults.reversed.toList();
     return Scaffold(
       appBar: AppBar(),
       body: ListView.builder(
         itemCount: allExamResults.length,
         itemBuilder: (context, index) {
-          double score =
-              ((allExamResults[index].correctQuestionCount / 33) * 100)
-                  .roundToDouble();
+          double score = ((allExamResults[index].correctQuestionCount / 33) * 100).roundToDouble();
           String status = score > 50 ? "Erfolgreich" : "Erfolglos";
-          String time =
-              "${allExamResults[index].time.minute}:${allExamResults[index].time.second}";
+          String time = "${allExamResults[index].time.minute}:${allExamResults[index].time.second}";
           return Card(
             child: ListTile(
                 title: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
-                        "Richtig: ${allExamResults[index].correctQuestionCount}"),
+                    Text("Richtig: ${allExamResults[index].correctQuestionCount}"),
                     Text("Falsch: ${allExamResults[index].falseQuestionCount}"),
                     Text("Leer: ${allExamResults[index].blankQuestionCount}")
                   ],
@@ -45,7 +40,7 @@ class AllExamResultsPage extends StatelessWidget {
                   ],
                 ),
                 onTap: () {
-                  _examResultViewModel.setExamResult = allExamResults[index];
+                  examResultViewModel.setExamResult = allExamResults[index];
                   Navigator.push(
                     context,
                     MaterialPageRoute(
